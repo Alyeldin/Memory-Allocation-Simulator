@@ -4,7 +4,52 @@
 #include <Windows.h>
 #include <stdlib.h>
 using namespace std;
+void FirstFit(int* MemoryBlockSize, int MemoryblockNo, int* Processes, int processnumbers)
+{
+    int* ProcessAllocation = new int[processnumbers];
 
+    for (int a = 0; a < processnumbers; a++)
+    {
+        ProcessAllocation[a] = -1;
+    }
+
+    for (int i = 0; i < processnumbers; i++)
+    {
+        for (int j = 0; j < MemoryblockNo; j++)
+        {
+            if (MemoryBlockSize[j] >= Processes[i])
+            {
+                ProcessAllocation[i] = j;
+                MemoryBlockSize[j] = 0;
+                break;
+            }
+        }
+    }
+
+    cout << "**************************************************";
+    cout << "\n PROCESS NO \t PROCESS SIZE \t BLOCK NO\n";
+    for (int i = 0; i < processnumbers; i++)
+    {
+        cout << " " << i + 1 << "\t\t ";
+        Sleep(100);
+        cout << Processes[i] << "\t\t ";
+        Sleep(100);
+        if (ProcessAllocation[i] != -1)
+        {
+            cout << ProcessAllocation[i] + 1;
+            Sleep(100);
+        }
+        else
+        {
+            cout << "Not Allocated";
+            Sleep(100);
+        }
+        cout << "\n";
+        Sleep(100);
+    }
+    cout << "**************************************************\n";
+
+}
 void BestFit(int* MemoryBlockSize, int MemoryblockNo, int* Processes, int processnumbers)
 {
     int* ProcessAllocation = new int[processnumbers];
@@ -61,7 +106,63 @@ void BestFit(int* MemoryBlockSize, int MemoryblockNo, int* Processes, int proces
     }
     cout << "**********************************************\n";
 }
+void WorstFit(int* MemoryBlockSize, int MemoryblockNo, int* Processes, int processnumbers)
+{
+    int* ProcessAllocation = new int[processnumbers];
 
+    for (int a = 0; a < processnumbers; a++)
+    {
+        ProcessAllocation[a] = -1;
+    }
+
+
+    for (int i = 0; i < processnumbers; i++)
+    {
+        int WorstIndex = -1;
+        for (int j = 0; j < MemoryblockNo; j++)
+        {
+            if (MemoryBlockSize[j] >= Processes[i])
+            {
+                if (WorstIndex == -1)
+                {
+                    WorstIndex = j;
+                }
+                else if (MemoryBlockSize[WorstIndex] < MemoryBlockSize[j])
+                {
+                    WorstIndex = j;
+                }
+            }
+        }
+        if (WorstIndex != -1)
+        {
+            ProcessAllocation[i] = WorstIndex;
+            MemoryBlockSize[WorstIndex] = 0;
+        }
+    }
+
+    cout << "**************************************************";
+    cout << "\n PROCESS NO \t PROCESS SIZE \t BLOCK NO\n";
+    for (int i = 0; i < processnumbers; i++)
+    {
+        cout << " " << i + 1 << "\t\t ";
+        Sleep(100);
+        cout << Processes[i] << "\t\t ";
+        Sleep(100);
+        if (ProcessAllocation[i] != -1)
+        {
+            cout << ProcessAllocation[i] + 1;
+            Sleep(100);
+        }
+        else
+        {
+            cout << "Not Allocated";
+            Sleep(100);
+        }
+        cout << "\n";
+        Sleep(100);
+    }
+    cout << "**************************************************\n";
+}
 void Runprogram()
 {
     cout << "Enter number of the Memory Blocks:\n";
